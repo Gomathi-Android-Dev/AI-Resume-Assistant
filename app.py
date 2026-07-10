@@ -4,6 +4,8 @@ import streamlit as st
 
 from ocr.extract_text import extract_resume
 from nlp.preprocess import preprocess_text
+from llm.gemini import analyze_resume
+
 
 # Load ML models
 model = joblib.load("models/model.pkl")
@@ -55,5 +57,12 @@ if uploaded_file is not None:
 
             # Decode label
             category = encoder.inverse_transform(prediction)[0]
+            analysis = analyze_resume(text, category)
 
-        st.success(f"🎯 Predicted Category: **{category}**")
+        st.success(f"🎯 Predicted Category: {category}")
+
+        st.markdown("---")
+
+        st.subheader("🤖 AI Resume Analysis")
+
+        st.write(analysis)
